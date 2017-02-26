@@ -13,6 +13,7 @@ class LinkedList:
         node = Node(x)
         if self.first == None:
             self.first = node
+            self.last = node
         elif self.last == None:
             self.last = self.first
             node.next = self.last
