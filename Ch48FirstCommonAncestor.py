@@ -13,7 +13,8 @@ def checkListforNode(node, linkedList):
         current = current.next
     return None
 
-def firstCommonAncestor(nodeA, nodeB):
+# this approach takes way too long-- o(log n)?  a better solution would find the depths of both nodes, and once they are on even footing, traverse to the parent
+def firstCommonAncestorBad(nodeA, nodeB):
     pathA = LinkedList()
     pathB = LinkedList()
     while nodeA or nodeB:
@@ -31,6 +32,40 @@ def firstCommonAncestor(nodeA, nodeB):
 
     return None
         
+def depth(node):
+    depth = 0
+    while node.parent:
+        node = node.parent
+        depth += 1
+    return depth
+
+def adjust(node, depth):
+    while depth > 0:
+        node = node.parent
+        depth -= 1
+    return node
+
+def firstCommonAncestor(nodeA, nodeB):
+    print('nodeA: {a}  nodeB: {b}'.format(a=nodeA.data, b=nodeB.data))
+    difference = depth(nodeA) - depth(nodeB)
+    
+    if difference < 0:
+        nodeB = adjust(nodeB, abs(difference))
+    else:
+        nodeA = adjust(nodeA, difference)
+    
+    while nodeA != nodeB:
+        
+        nodeA = getattr(nodeA, 'parent', None)    
+        nodeB = getattr(nodeB, 'parent', None)
+        
+    if nodeA == None or nodeB == None: 
+        return None
+    else:
+        return nodeA
+    
+    
+
 def printTree(tree):
     setup(
         node_init_func=lambda v: TreeNode(v),
